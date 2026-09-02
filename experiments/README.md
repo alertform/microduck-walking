@@ -43,11 +43,23 @@ The yaw and velocity-tracking results rest on near-normal, low-spread
 distributions and large `t` values. **The falls result does not**, and should
 not be read as equally solid:
 
-`std` is more than twice the mean for every falls figure (0.516 +/- 1.250,
-0.469 +/- 1.212, 0.047 +/- 0.372). That is the signature of a heavily
-zero-inflated distribution — most environments never fall, a few fall several
-times — and a `t` test on it is a rough instrument. The `t` values are also a
-tier lower (2.7-2.9 vs 6.9-10.4).
+`std` exceeds the mean by a wide margin on every falls figure, and the ratio is
+extreme for the AFTER policy:
+
+| policy | falls / min | std / mean |
+|---|---|---|
+| BEFORE | 0.516 +/- 1.250 | 2.4x |
+| OFFICIAL | 0.469 +/- 1.212 | 2.6x |
+| AFTER | 0.047 +/- 0.372 | **7.9x** |
+
+That is the signature of a heavily zero-inflated distribution — most
+environments never fall, a few fall several times — and a `t` test on it is a
+rough instrument. The `t` values are also a tier lower (2.7-2.9 vs 6.9-10.4).
+
+The sample size is doing the work here. At `n=16` the same comparison gives
+`t≈1.3` — not significant. The falls result only reaches significance because
+the evaluation was widened to 64 environments; the yaw result was already
+significant at `n=16`.
 
 So the absolute numbers are the honest way to read it:
 
