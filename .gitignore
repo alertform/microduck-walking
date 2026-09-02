@@ -38,3 +38,15 @@ backup_onnx/
 logdir/.claude/
 logdir/
 logdir/.claude/worktrees/
+
+# Fork additions: local run artefacts (experiments/ is committed deliberately)
+/train_*.log
+/play*.log
+/cmp_*.log
+/ev*.log
+/train_pid.txt
+/run_train*.cmd
+/run_train*.py
+/v_*.mp4
+/vid_*.mp4
+/train_wrapper.py

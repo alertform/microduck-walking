@@ -335,7 +335,12 @@ def make_microduck_velocity_env_cfg(
     cfg.rewards["air_time"].params["threshold_min"] = 0.125
     cfg.rewards["air_time"].params["threshold_max"] = 0.300
 
-    cfg.rewards["body_ang_vel"].weight = -0.05
+    # Yaw wobble is this policy's main defect. At -0.05 this term contributed
+    # only -0.024 to the episode return, i.e. it was effectively inactive.
+    # Raising it to -0.3 cut yaw-rate std 0.531 -> 0.437 rad/s and falls
+    # 0.516 -> 0.047 /min (64 envs x 20 s; see experiments/README.md).
+    # Single-variable change -- no other reward weight is touched.
+    cfg.rewards["body_ang_vel"].weight = -0.3
     cfg.rewards["angular_momentum"].weight = -0.02
 
     # Velocity tracking rewards

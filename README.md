@@ -1,3 +1,20 @@
+> ### This is a fork
+>
+> Upstream is [pollen-robotics/microduck_rl](https://github.com/pollen-robotics/microduck_rl)
+> (Apache-2.0) — the environment, robot model, actuator identification and
+> training stack are their work. Everything below this box is their README.
+>
+> **What this fork adds:** a single-variable reward ablation
+> (`body_ang_vel` penalty `-0.05` → `-0.3`) that cuts yaw-rate std by 18% and
+> falls by 91%, evaluated against Pollen's own released `alpha_walking` policy
+> under an identical 64-environment protocol — plus the evaluation harness that
+> makes that comparison possible.
+>
+> **📄 [experiments/README.md](experiments/README.md)** — results, method, and a
+> writeup of how the first version of this result was wrong and what fixed it.
+>
+> ![comparison](experiments/media/comparison.gif)
+
 # Microduck RL
 
 <img width="2215" height="884" alt="image" src="https://github.com/user-attachments/assets/5db7cc83-b3ce-4f7c-83f0-0572a63baed7" />
