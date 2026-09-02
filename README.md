@@ -10,10 +10,36 @@
 > velocity-tracking error, under an identical 64-environment protocol — plus
 > the evaluation harness that makes that comparison possible.
 >
-> **📄 [experiments/README.md](experiments/README.md)** — results, method, and a
-> writeup of how the first version of this result was wrong and what fixed it.
->
 > ![comparison](experiments/media/comparison.gif)
+>
+> *Left: official `alpha_walking`. Right: this work. Same environment, same
+> command (`vx = 0.3 m/s`), same protocol.*
+>
+> #### Results
+>
+> 64 environments × 20 s per policy, identical fixed command. Mean ± std across
+> environments; `t` uses `SEM = std/√64`. Lower is better on every row.
+>
+> | metric | BEFORE | AFTER | OFFICIAL | t (vs before) | t (vs official) |
+> |---|---|---|---|---|---|
+> | yaw-rate std (rad/s) | 0.531 ± 0.129 | **0.437 ± 0.087** | 0.594 ± 0.160 | **−4.83** | **−6.90** |
+> | falls / min | 0.516 ± 1.250 | **0.047 ± 0.372** | 0.469 ± 1.212 | −2.88 | −2.66 |
+> | vx error (m/s) | 0.119 ± 0.018 | 0.118 ± 0.019 | 0.159 ± 0.025 | −0.31 (n.s.) | **−10.45** |
+> | vx std (m/s) | — | 0.097 ± 0.013 | 0.100 ± 0.018 | — | −1.08 (n.s.) |
+>
+> **Attributable to this change:** yaw-rate std −18% (`t=−4.83`), falls −91%.
+>
+> **Better than the official baseline:** yaw −26% (`t=−6.90`),
+> velocity-tracking error −26% (`t=−10.45`), falls −90%.
+>
+> **Not claimed:** velocity tracking is *not* improved by this change
+> (0.119 → 0.118) — that advantage predates it. `vx std` is a tie. The falls
+> metric is heavily zero-inflated (std/mean up to 7.9×) and only reaches
+> significance at `n=64`; it is supporting evidence, not a headline.
+>
+> **📄 [experiments/README.md](experiments/README.md)** — method, evidence
+> strength, reproduction commands, and a writeup of how the first version of
+> this result was wrong and what fixed it.
 
 # Microduck RL
 
