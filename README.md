@@ -6,9 +6,9 @@
 >
 > **What this fork adds:** a single-variable reward ablation
 > (`body_ang_vel` penalty `-0.05` → `-0.3`) that cuts yaw-rate std by 18% and
-> falls by 91%, evaluated against Pollen's own released `alpha_walking` policy
-> under an identical 64-environment protocol — plus the evaluation harness that
-> makes that comparison possible.
+> beats the released `alpha_walking` policy by 26% on both yaw stability and
+> velocity-tracking error, under an identical 64-environment protocol — plus
+> the evaluation harness that makes that comparison possible.
 >
 > **📄 [experiments/README.md](experiments/README.md)** — results, method, and a
 > writeup of how the first version of this result was wrong and what fixed it.

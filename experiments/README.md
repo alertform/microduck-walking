@@ -5,9 +5,10 @@ A single-variable reward ablation on top of
 benchmarked against the released Pollen policy under an identical protocol.
 
 **One line:** raising the body angular-velocity penalty from `-0.05` to `-0.3`
-cut yaw-rate std by 18% and falls by 91%, and the resulting policy beats the
-official `alpha_walking` baseline on yaw stability, velocity tracking, and fall
-rate.
+cut yaw-rate std by 18%, and the resulting policy beats the official
+`alpha_walking` baseline by 26% on both yaw stability and velocity-tracking
+error. Falls also dropped sharply (0.47 to 0.05 per minute) on a noisier
+metric — see [evidence strength](#evidence-strength-is-not-uniform).
 
 ![comparison](media/comparison.gif)
 
@@ -31,10 +32,35 @@ Values are mean +/- std across the 64 environments. `t` uses `SEM = std/sqrt(64)
 
 Lower is better for every row. Negative `t` favours the AFTER policy.
 
-**Attributable to this change (2 metrics):** yaw-rate std -18%, falls -91%.
+**Attributable to this change:** yaw-rate std -18% (`t=-4.83`), falls -91%.
 
-**Better than the official baseline (3 metrics):** yaw -26%, velocity-tracking
-error -26%, falls -90%.
+**Better than the official baseline:** yaw -26% (`t=-6.90`), velocity-tracking
+error -26% (`t=-10.45`), falls -90%.
+
+### Evidence strength is not uniform
+
+The yaw and velocity-tracking results rest on near-normal, low-spread
+distributions and large `t` values. **The falls result does not**, and should
+not be read as equally solid:
+
+`std` is more than twice the mean for every falls figure (0.516 +/- 1.250,
+0.469 +/- 1.212, 0.047 +/- 0.372). That is the signature of a heavily
+zero-inflated distribution — most environments never fall, a few fall several
+times — and a `t` test on it is a rough instrument. The `t` values are also a
+tier lower (2.7-2.9 vs 6.9-10.4).
+
+So the absolute numbers are the honest way to read it:
+
+| policy | falls / min | roughly |
+|---|---|---|
+| OFFICIAL | 0.469 | one fall every ~6 episodes |
+| BEFORE | 0.516 | one fall every ~6 episodes |
+| AFTER | 0.047 | one fall every ~64 episodes |
+
+(20 s episodes, so 3 episodes per minute.)
+
+The direction and magnitude are consistent and large. The significance figure
+is indicative, not exact.
 
 **Explicitly not claimed:**
 
@@ -42,10 +68,6 @@ error -26%, falls -90%.
   The advantage over the official policy was already present before the change
   and is a property of this training run, not of this ablation.
 - `vx std` and `vy mean` are statistical ties with the official policy.
-- The falls distribution is heavily zero-inflated (most environments never
-  fall), so its `t` value is an approximation. The effect is large and
-  consistent in direction, but the significance figure should be read as
-  indicative rather than exact.
 
 Raw logs for every number above: [`eval_logs/`](eval_logs/).
 
