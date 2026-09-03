@@ -132,6 +132,41 @@ than "correlated with this batch of changes".
 
 ---
 
+## Pushing the same knob further: `-1.0` was tried and rejected
+
+The obvious follow-up was to ask whether `-0.3` had saturated. The penalty's
+episode contribution had sat flat at about `-0.10` for the last five hours of
+that run, which looked like a ceiling.
+
+It had not saturated — but the extra yaw came at a price that was not worth
+paying. Same protocol, same 64 environments, and the two checkpoints are at
+matched training (351M vs 357M steps) so the comparison isolates the weight:
+
+| metric | `w=-0.3` (shipped) | `w=-1.0` | t |
+|---|---|---|---|
+| yaw-rate std (rad/s) | 0.437 +/- 0.087 | **0.395 +/- 0.087** | -2.73 |
+| **vx error (m/s)** | **0.118 +/- 0.019** | 0.135 +/- 0.016 | **+5.48** |
+| vx std (m/s) | 0.097 +/- 0.013 | 0.090 +/- 0.014 | -2.93 |
+| falls / min | 0.047 | 0.047 | 0.00 |
+
+Yaw does improve another 9.6%. But velocity-tracking error degrades 14.4%, and
+that `t=+5.48` is a stronger result than the yaw gain it buys. Falls do not move
+at all — the `-0.05` to `-0.3` step had already taken everything available
+there.
+
+The mechanism is the obvious one: penalise angular velocity hard enough and the
+policy stops rotating, including the torso motion that walking needs. It gets
+straighter and slower.
+
+`-0.3` is kept. Trading 14% of velocity tracking for 10% of yaw is a bad deal
+in general, and specifically bad here — velocity tracking is one of the two
+headline results against the official baseline, and `-1.0` would cut that
+margin from 26% to 15%.
+
+Log: [`eval_logs/ev64_yaw10.log`](eval_logs/ev64_yaw10.log).
+
+---
+
 ## How the first version of this result was wrong
 
 The first evaluation was a **single 5-second rollout per policy**. It reported:

@@ -341,6 +341,10 @@ def make_microduck_velocity_env_cfg(
     # on a noisier zero-inflated metric, falls 0.516 -> 0.047 /min
     # (64 envs x 20 s; see experiments/README.md for evidence strength).
     # Single-variable change -- no other reward weight is touched.
+    #
+    # -1.0 was tried and rejected: yaw improves a further 9.6% but vx error
+    # degrades 14.4% (t=+5.48) and falls do not move at all. Penalising angular
+    # velocity that hard suppresses the torso rotation walking needs.
     cfg.rewards["body_ang_vel"].weight = -0.3
     cfg.rewards["angular_momentum"].weight = -0.02
 
